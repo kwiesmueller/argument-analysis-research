@@ -1,0 +1,34 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "accessor.go",
+        "context.go",
+        "error.go",
+        "object.go",
+        "group.go",
+        "incomplete.go",
+        "meta.go",
+    ],
+    importpath = "seibert.biz/code/pkg/meta",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_pkg_errors//:go_default_library",
+        "@com_github_seibert_media_golibs//log:go_default_library",
+        "@org_uber_go_zap//:go_default_library",
+    ],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = [
+        "incomplete_test.go",
+        "meta_test.go",
+    ],
+    embed = [":go_default_library"],
+    deps = [
+        "@com_github_google_gofuzz//:go_default_library",
+        "@io_k8s_utils//diff:go_default_library",
+    ],
+)

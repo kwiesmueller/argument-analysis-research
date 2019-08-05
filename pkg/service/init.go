@@ -47,7 +47,7 @@ type GoogleImpersonationSpec struct {
 }
 
 // Init a service
-// This contains our common boilerplate code required for every service inside the events project
+// This contains our common boilerplate code required for every service inside the objects project
 func Init(key string, spec Spec) (ctx context.Context) {
 	err := envconfig.Process("", spec)
 	if err != nil {
