@@ -21,13 +21,11 @@ package dgraph
 import (
 	"context"
 
-	"github.com/canonical-debate-lab/argument-analysis-research/pkg/linker"
-
 	"github.com/dgraph-io/dgo"
 )
 
-// Dgraph provides a storage implementation based on https://dgraph.io to provide an actionable data layer for the discovered results
-type Dgraph struct {
+// Client provides a storage implementation based on https://dgraph.io to provide an actionable data layer for the discovered results
+type Client struct {
 	*dgo.Dgraph
 }
 
@@ -37,9 +35,4 @@ func (c *Client) ObjectUID(ctx context.Context, domain string) (string, error) {
 	defer txn.Commit(ctx)
 
 	return c.queryUID(ctx, txn, domain)
-}
-
-func (c *Client) New(ctx context.Context, id string) (linker.Storage, error) {
-
-	return c, nil
 }

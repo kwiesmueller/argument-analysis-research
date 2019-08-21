@@ -5,13 +5,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/google/gofuzz"
+	fuzz "github.com/google/gofuzz"
 	"k8s.io/utils/diff"
 )
 
 type testObject struct {
 	Metadata *ObjectMeta `json:"metadata,omitempty"`
-	Data     testData   `json:"data,omitempty"`
+	Data     testData    `json:"data,omitempty"`
 }
 
 type testData struct {
@@ -31,9 +31,9 @@ func TestIncompleteJSONRoundtrip(t *testing.T) {
 	fuzzer := fuzz.New().Funcs(
 		func(e *ObjectMeta, c fuzz.Continue) {
 			c.Fuzz(&e)
-			e.Kind.Group = strings.Replace(e.Kind.Group, ".", "", -1)
-			e.Kind.Version = strings.Replace(e.Kind.Version, ".", "", -1)
-			e.Kind.Kind = strings.Replace(e.Kind.Kind, ".", "", -1)
+			e.Kind.Group = Group(strings.Replace(e.Kind.Group.String(), ".", "", -1))
+			e.Kind.Version = Version(strings.Replace(e.Kind.Version.String(), ".", "", -1))
+			e.Kind.Kind = Kind(strings.Replace(e.Kind.Kind.String(), ".", "", -1))
 		},
 	)
 

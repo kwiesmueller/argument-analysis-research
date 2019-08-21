@@ -10,7 +10,7 @@ type Linker struct {
 	Data     *LinkerData      `json:"data"`
 }
 
-// Kind is an access helper to implement the Kind interface
+// Kind is an access helper to implement the KindAccessor interface
 func (c *Linker) Kind() meta.GroupVersionKind {
 	return LinkerKind
 }
@@ -35,6 +35,6 @@ type LinkerData struct {
 func NewLinker(data *LinkerData) *Linker {
 	return &Linker{
 		Metadata: meta.NewObjectMeta(LinkerKind),
-		Data:     &LinkerData{},
+		Data:     data,
 	}
 }

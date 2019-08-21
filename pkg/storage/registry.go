@@ -13,6 +13,13 @@ type Registry struct {
 	converters map[meta.GroupVersionKind]Converter
 }
 
+// NewRegistry for mapping api types to their respective converters
+func NewRegistry() *Registry {
+	return &Registry{
+		converters: make(map[meta.GroupVersionKind]Converter),
+	}
+}
+
 // Add a converter for the given GroupVersionKind
 func (r *Registry) Add(gvk meta.GroupVersionKind, converter Converter) {
 	r.m.Lock()

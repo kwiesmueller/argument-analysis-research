@@ -19,9 +19,10 @@ type Object interface {
 	SetCreated(time.Time)
 	GetLabels() map[string]string
 	SetLabels(map[string]string)
+	IsNil() bool
 }
 
-// Kind provides access to an objects GroupVersionKind
-// type Kind interface {
-// 	Kind() GroupVersionKind
-// }
+// KindAccessor provides access to an objects GroupVersionKind
+type KindAccessor interface {
+	Kind() GroupVersionKind
+}

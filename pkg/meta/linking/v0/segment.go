@@ -10,7 +10,7 @@ type Segment struct {
 	Data     *SegmentData     `json:"data"`
 }
 
-// Kind is an access helper to implement the Kind interface
+// Kind is an access helper to implement the KindAccessor interface
 func (c *Segment) Kind() meta.GroupVersionKind {
 	return SegmentKind
 }
@@ -25,15 +25,14 @@ var SegmentKind = Linking.WithKind("segment")
 
 // SegmentData describing the segment in relation to its object
 type SegmentData struct {
-	UID      string    `json:"uid"`
-	Content  string    `json:"content"`
-	Document *Document `json:"document"`
+	UID     string `json:"uid"`
+	Content string `json:"content"`
 }
 
 // NewSegment initializes an empty object with the correct metadata
 func NewSegment(data *SegmentData) *Segment {
 	return &Segment{
 		Metadata: meta.NewObjectMeta(SegmentKind),
-		Data:     &SegmentData{},
+		Data:     data,
 	}
 }

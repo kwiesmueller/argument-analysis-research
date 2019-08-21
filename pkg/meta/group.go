@@ -49,6 +49,16 @@ func (gvk GroupVersionKind) GroupVersion() GroupVersion {
 	return GroupVersion{Group: gvk.Group, Version: gvk.Version}
 }
 
+// Is returns true if the passed in gvk's values are equal to it's own
+func (gvk GroupVersionKind) Is(to GroupVersionKind) bool {
+	if gvk.Group != to.Group ||
+		gvk.Version != to.Version ||
+		gvk.Kind != to.Kind {
+		return false
+	}
+	return true
+}
+
 func (gvk GroupVersionKind) String() string {
 	return fmt.Sprintf("%s/%s.%s", gvk.Group, gvk.Version, gvk.Kind)
 }

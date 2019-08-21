@@ -42,3 +42,5 @@ func (u *Incomplete) GetCreated() time.Time { return u.GetObjectMeta().GetCreate
 
 // SetCreated sets the creation timestamp of an object in UTC
 func (u *Incomplete) SetCreated(to time.Time) { u.GetObjectMeta().SetCreated(to.UTC()) }
+
+func (u *Incomplete) IsNil() bool { return u == nil }

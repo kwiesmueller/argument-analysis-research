@@ -14,7 +14,7 @@ type UnknownKind struct {
 	Data     *UnknownKindData `json:"data"`
 }
 
-// Kind is an access helper to implement the Kind interface
+// Kind is an access helper to implement the KindAccessor interface
 func (c *UnknownKind) Kind() meta.GroupVersionKind {
 	return UnknownKindKind
 }

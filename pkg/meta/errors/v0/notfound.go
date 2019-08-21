@@ -14,7 +14,7 @@ type NotFound struct {
 	Data     *NotFoundData    `json:"data"`
 }
 
-// Kind is an access helper to implement the Kind interface
+// Kind is an access helper to implement the KindAccessor interface
 func (c *NotFound) Kind() meta.GroupVersionKind {
 	return NotFoundKind
 }

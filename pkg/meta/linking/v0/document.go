@@ -10,7 +10,7 @@ type Document struct {
 	Data     *DocumentData    `json:"data"`
 }
 
-// Kind is an access helper to implement the Kind interface
+// Kind is an access helper to implement the KindAccessor interface
 func (c *Document) Kind() meta.GroupVersionKind {
 	return DocumentKind
 }
@@ -35,6 +35,6 @@ type DocumentData struct {
 func NewDocument(data *DocumentData) *Document {
 	return &Document{
 		Metadata: meta.NewObjectMeta(DocumentKind),
-		Data:     &DocumentData{},
+		Data:     data,
 	}
 }

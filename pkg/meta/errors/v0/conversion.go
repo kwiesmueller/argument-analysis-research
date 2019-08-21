@@ -14,7 +14,7 @@ type Conversion struct {
 	Data     *ConversionData  `json:"data"`
 }
 
-// Kind is an access helper to implement the Kind interface
+// Kind is an access helper to implement the KindAccessor interface
 func (c *Conversion) Kind() meta.GroupVersionKind {
 	return ConversionKind
 }
@@ -29,15 +29,15 @@ var ConversionKind = apiError.Conversion.WithVersion(APIVersion)
 
 // ConversionData describes the lookup parameters and detailed error message
 type ConversionData struct {
-	Reason  string `json:"reason"`
-	From    string `json:"from"`
-	To      string `json:"to"`
-	Message error  `json:"error"`
-	Details string `json:"details"`
+	Reason  string                `json:"reason"`
+	From    meta.GroupVersionKind `json:"from"`
+	To      meta.GroupVersionKind `json:"to"`
+	Message error                 `json:"error"`
+	Details string                `json:"details"`
 }
 
 // NewConversion initializes an empty object with the correct metadata
-func NewConversion(reason, from, to, details string) *Conversion {
+func NewConversion(reason string, from, to meta.GroupVersionKind, details string) *Conversion {
 	return &Conversion{
 		Metadata: meta.NewObjectMeta(ConversionKind),
 		Data: &ConversionData{
@@ -55,5 +55,5 @@ func (c *Conversion) Error() string {
 	if c.Data == nil {
 		return fmt.Sprintf("%s: undefined", c.Kind())
 	}
-	return fmt.Sprintf("%s: %s: (%s > %s): %s", c.Kind(), c.Data.Message, c.Data.From, c.Data.To, c.Data.Details)
+	return fmt.Sprintf("%s: %s: (%s > %s): %s: %s", c.Kind(), c.Data.Message, c.Data.From, c.Data.To, c.Data.Reason, c.Data.Details)
 }
