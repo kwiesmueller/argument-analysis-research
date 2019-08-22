@@ -26,6 +26,7 @@ type BaseSpec struct {
 	SentryDSN   string `help:"sentry dsn key"`
 	IsProd      bool   `envconfig:"is_prod" default:"false" help:"whether or not this service is running in production mode (used to disable certain features in dev)"`
 	Local       bool   `envconfig:"local" default:"false" help:"setting local to true, enables human readable logging"`
+	Port        int    `envconfig:"port" default:"80" help:"the api server port (default: 80)"`
 	MetricsPort int    `envconfig:"metricsPort" default:"8080" help:"the metric server port (default: 8080)"`
 }
 

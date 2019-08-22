@@ -1,0 +1,20 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["default.go"],
+    importpath = "github.com/canonical-debate-lab/argument-analysis-research/pkg/storage/registries",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//pkg/meta/linking/v0:go_default_library",
+        "//pkg/storage:go_default_library",
+        "//pkg/storage/dgraph/converters/linking/v0:go_default_library",
+    ],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = ["default_test.go"],
+    embed = [":go_default_library"],
+    deps = ["//pkg/meta/linking/v0:go_default_library"],
+)

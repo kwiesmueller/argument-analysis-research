@@ -13,11 +13,11 @@ go_library(
         "//pkg/linker:go_default_library",
         "//pkg/linker/api:go_default_library",
         "//pkg/linker/async:go_default_library",
-        "//pkg/linker/storage:go_default_library",
         "//pkg/service:go_default_library",
-        "@com_github_go_chi_chi//:go_default_library",
-        "@com_github_seibert_media_golibs//log:go_default_library",
-        "@org_uber_go_zap//:go_default_library",
+        "//vendor/github.com/go-chi/chi:go_default_library",
+        "//vendor/github.com/seibert-media/golibs/log:go_default_library",
+        "//vendor/go.uber.org/zap:go_default_library",
+        "@com_github_canonical_debate_lab_argument_analysis_research//pkg/linker/storage:go_default_library",
     ],
 )
 

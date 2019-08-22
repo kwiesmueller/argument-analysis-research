@@ -1,4 +1,4 @@
-package storage_test
+package registries_test
 
 import (
 	"testing"
@@ -9,7 +9,7 @@ import (
 )
 
 func TestDefaultRegistry(t *testing.T) {
-	registry := registries.DefaultRegistry
+	registry := registries.Default
 
 	converter, err := registry.Get(linkingv0.LinkerKind)
 	if err != nil {

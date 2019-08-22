@@ -1,0 +1,9 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["kinds.go"],
+    importpath = "github.com/canonical-debate-lab/argument-analysis-research/pkg/meta/errors",
+    visibility = ["//visibility:public"],
+    deps = ["//pkg/meta:go_default_library"],
+)

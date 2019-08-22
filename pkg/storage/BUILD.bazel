@@ -1,20 +1,35 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
     srcs = [
-        "local.go",
-        "localManager.go",
+        "accessors.go",
+        "converter.go",
+        "registry.go",
+        "repository.go",
     ],
-    importpath = "github.com/canonical-debate-lab/argument-analysis-research/pkg/linker/storage",
+    importpath = "github.com/canonical-debate-lab/argument-analysis-research/pkg/storage",
     visibility = ["//visibility:public"],
     deps = [
-        "//pkg/document:go_default_library",
-        "//pkg/linker:go_default_library",
-        "@com_github_pkg_errors//:go_default_library",
-        "@com_github_seibert_media_golibs//log:go_default_library",
-        "@in_gopkg_djherbis_stow_v3//:go_default_library",
-        "@io_etcd_go_bbolt//:go_default_library",
-        "@org_uber_go_zap//:go_default_library",
+        "//pkg/meta:go_default_library",
+        "//pkg/meta/errors/v0:go_default_library",
+        "//vendor/github.com/seibert-media/golibs/log:go_default_library",
+        "//vendor/go.uber.org/zap:go_default_library",
+    ],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = [
+        "provider_mock_test.go",
+        "repository_test.go",
+    ],
+    embed = [":go_default_library"],
+    deps = [
+        "//pkg/meta/errors/v0:go_default_library",
+        "//pkg/meta/linking/v0:go_default_library",
+        "//pkg/mocks:go_default_library",
+        "//pkg/storage/dgraph/converters/linking/v0:go_default_library",
+        "//pkg/storage/registries:go_default_library",
     ],
 )

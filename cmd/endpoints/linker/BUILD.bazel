@@ -1,0 +1,74 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["service.go"],
+    importpath = "github.com/canonical-debate-lab/argument-analysis-research/cmd/endpoints/linker",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//pkg/api:go_default_library",
+        "//pkg/linker/api/v0:go_default_library",
+        "//pkg/meta/linking/v0:go_default_library",
+        "//pkg/mocks:go_default_library",
+        "//pkg/service:go_default_library",
+        "//pkg/storage:go_default_library",
+        "//pkg/storage/dgraph/converters/linking/v0:go_default_library",
+        "//pkg/storage/registries:go_default_library",
+        "//vendor/github.com/seibert-media/golibs/log:go_default_library",
+        "//vendor/go.uber.org/zap:go_default_library",
+    ],
+)
+
+go_binary(
+    name = "bin",
+    embed = [":go_default_library"],
+    goarch = "amd64",
+    goos = "linux",
+    pure = "on",
+    visibility = ["//visibility:public"],
+)
+
+load("@io_bazel_rules_docker//go:image.bzl", "go_image")
+
+go_image(
+    name = "image",
+    binary = ":bin",
+)
+
+load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
+load("@k8s_deploy//:defaults.bzl", "k8s_deploy")
+load(
+    "//:helpers/k8s.bzl",
+    manifest = "template_manifest",
+)
+
+manifest(
+    name = "dpl",
+    template = "//defaults/k8s:deploy-linker.yaml",
+)
+
+manifest(
+    name = "svc",
+    template = "//defaults/k8s:service.yaml",
+)
+
+k8s_deploy(
+    name = "service",
+    template = ":svc",
+)
+
+k8s_deploy(
+    name = "deployment",
+    images = {
+        ":dev": ":image",
+    },
+    template = ":dpl",
+)
+
+k8s_objects(
+    name = "dev",
+    objects = [
+        ":deployment",
+        ":service",
+    ],
+)

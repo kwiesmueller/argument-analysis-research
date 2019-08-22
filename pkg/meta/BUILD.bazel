@@ -5,24 +5,20 @@ go_library(
     srcs = [
         "accessor.go",
         "context.go",
-        "error.go",
-        "object.go",
         "group.go",
         "incomplete.go",
         "meta.go",
+        "object.go",
     ],
-    importpath = "seibert.biz/code/pkg/meta",
+    importpath = "github.com/canonical-debate-lab/argument-analysis-research/pkg/meta",
     visibility = ["//visibility:public"],
-    deps = [
-        "@com_github_pkg_errors//:go_default_library",
-        "@com_github_seibert_media_golibs//log:go_default_library",
-        "@org_uber_go_zap//:go_default_library",
-    ],
+    deps = ["//vendor/github.com/pkg/errors:go_default_library"],
 )
 
 go_test(
     name = "go_default_test",
     srcs = [
+        "group_test.go",
         "incomplete_test.go",
         "meta_test.go",
     ],

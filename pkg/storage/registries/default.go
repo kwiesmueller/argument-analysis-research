@@ -7,10 +7,10 @@ import (
 	linkingStoragev0 "github.com/canonical-debate-lab/argument-analysis-research/pkg/storage/dgraph/converters/linking/v0"
 )
 
-// DefaultRegistry .
-var DefaultRegistry = storage.NewRegistry()
+// Default .
+var Default = storage.NewRegistry()
 
 // init .
 func init() {
-	DefaultRegistry.Add(linkingv0.LinkerKind, &linkingStoragev0.LinkerConverter{})
+	Default.Add(linkingv0.LinkerKind, &linkingStoragev0.LinkerConverter{})
 }

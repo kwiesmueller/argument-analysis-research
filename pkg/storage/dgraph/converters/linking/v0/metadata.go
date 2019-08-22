@@ -24,6 +24,11 @@ func (m Metadata) Kind() meta.GroupVersionKind {
 	return meta.ParseGroupKind(m.GroupKind).WithVersion(meta.Version(m.APIVersion))
 }
 
+// GetID is an access helper to implement the storage.IDAccessort interface
+func (m Metadata) GetID() string {
+	return m.ID
+}
+
 var (
 	// ObjectMetaKind for the storage subgroup
 	ObjectMetaKind = meta.GroupVersionKind{
