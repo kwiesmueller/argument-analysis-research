@@ -13,8 +13,8 @@ go_library(
     deps = [
         "//pkg/meta/errors/v0:go_default_library",
         "//pkg/meta/linking/v0:go_default_library",
-        "//vendor/github.com/pkg/errors:go_default_library",
         "@com_github_dgraph_io_dgo//:go_default_library",
         "@com_github_dgraph_io_dgo//protos/api:go_default_library",
+        "@com_github_pkg_errors//:go_default_library",
     ],
 )

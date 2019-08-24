@@ -12,7 +12,7 @@ go_library(
     ],
     importpath = "github.com/canonical-debate-lab/argument-analysis-research/pkg/meta",
     visibility = ["//visibility:public"],
-    deps = ["//vendor/github.com/pkg/errors:go_default_library"],
+    deps = ["@com_github_pkg_errors//:go_default_library"],
 )
 
 go_test(
