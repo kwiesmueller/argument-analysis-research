@@ -33,6 +33,9 @@ type DocumentData struct {
 
 // NewDocument initializes an empty object with the correct metadata
 func NewDocument(data *DocumentData) *Document {
+	if data == nil {
+		data = &DocumentData{}
+	}
 	return &Document{
 		Metadata: meta.NewObjectMeta(DocumentKind),
 		Data:     data,

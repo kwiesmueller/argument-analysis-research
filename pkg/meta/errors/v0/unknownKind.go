@@ -30,17 +30,20 @@ var UnknownKindKind = apiError.UnknownKind.WithVersion(APIVersion)
 // UnknownKindData describes the lookup parameters and detailed error message
 type UnknownKindData struct {
 	Kind    meta.GroupVersionKind `json:"kind"`
-	Message error                 `json:"error"`
+	Message string                `json:"message"`
+	Error   error                 `json:"error,omitempty"`
 	Details string                `json:"details"`
 }
 
 // NewUnknownKind initializes an empty object with the correct metadata
 func NewUnknownKind(kind meta.GroupVersionKind, details string) *UnknownKind {
+	err := errors.New("unknown kind")
 	return &UnknownKind{
 		Metadata: meta.NewObjectMeta(UnknownKindKind),
 		Data: &UnknownKindData{
 			Kind:    kind,
-			Message: errors.New("unknown kind"),
+			Error:   err,
+			Message: err.Error(),
 			Details: details,
 		},
 	}

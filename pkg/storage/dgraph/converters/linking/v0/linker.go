@@ -1,6 +1,8 @@
 package linking
 
 import (
+	"reflect"
+
 	"github.com/canonical-debate-lab/argument-analysis-research/pkg/meta/linking/v0"
 	"github.com/canonical-debate-lab/argument-analysis-research/pkg/storage"
 )
@@ -34,11 +36,15 @@ func (c *LinkerConverter) ToStorage(obj interface{}) (interface{}, error) {
 
 	linker, typeOK := obj.(*linking.Linker)
 	if !typeOK {
-		return path.Fail("invalid type", "")
+		return path.Fail("invalid type", reflect.TypeOf(obj).String())
 	}
 
 	if _, err := path.ValidateAPIObject(linker); err != nil {
 		return nil, err
+	}
+
+	if linker.Data == nil {
+		return path.Fail("invalid object data", "")
 	}
 
 	metadata, err := c.MetadataConverter.ToStorage(linker.Metadata)
@@ -58,7 +64,7 @@ func (c *LinkerConverter) FromStorage(obj interface{}) (interface{}, error) {
 
 	linker, typeOK := obj.(*Linker)
 	if !typeOK {
-		return path.Fail("invalid type", "")
+		return path.Fail("invalid type", reflect.TypeOf(obj).String())
 	}
 
 	if linker == nil {

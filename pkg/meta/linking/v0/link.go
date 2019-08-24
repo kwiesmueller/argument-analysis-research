@@ -32,6 +32,9 @@ type LinkData struct {
 
 // NewLink initializes an empty object with the correct metadata
 func NewLink(data *LinkData) *Link {
+	if data == nil {
+		data = &LinkData{}
+	}
 	return &Link{
 		Metadata: meta.NewObjectMeta(LinkKind),
 		Data:     data,

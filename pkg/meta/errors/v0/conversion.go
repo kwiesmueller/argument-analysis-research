@@ -5,6 +5,7 @@ import (
 
 	"github.com/canonical-debate-lab/argument-analysis-research/pkg/meta"
 	apiError "github.com/canonical-debate-lab/argument-analysis-research/pkg/meta/errors"
+	"github.com/pkg/errors"
 )
 
 // Conversion is an error indicating the requested object could not be converted
@@ -31,19 +32,22 @@ type ConversionData struct {
 	Reason  string                `json:"reason"`
 	From    meta.GroupVersionKind `json:"from"`
 	To      meta.GroupVersionKind `json:"to"`
-	Error   string                `json:"error"`
+	Message string                `json:"message"`
+	Error   error                 `json:"error,omitempty"`
 	Details string                `json:"details"`
 }
 
 // NewConversion initializes an empty object with the correct metadata
 func NewConversion(reason string, from, to meta.GroupVersionKind, details string) *Conversion {
+	err := errors.New("conversion failed")
 	return &Conversion{
 		Metadata: meta.NewObjectMeta(ConversionKind),
 		Data: &ConversionData{
 			Reason:  reason,
 			From:    from,
 			To:      to,
-			Error:   "conversion failed",
+			Message: err.Error(),
+			Error:   err,
 			Details: details,
 		},
 	}

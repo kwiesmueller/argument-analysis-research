@@ -1,9 +1,8 @@
 package linking
 
 import (
-	"fmt"
+	"reflect"
 
-	errorsv0 "github.com/canonical-debate-lab/argument-analysis-research/pkg/meta/errors/v0"
 	"github.com/canonical-debate-lab/argument-analysis-research/pkg/meta/linking/v0"
 	"github.com/canonical-debate-lab/argument-analysis-research/pkg/storage"
 )
@@ -38,31 +37,19 @@ var _ storage.Converter = &DocumentConverter{}
 
 // ToStorage converts a passed in linking/v0.document to it's storage format
 func (c *DocumentConverter) ToStorage(obj interface{}) (interface{}, error) {
+	path := DocumentConversion.ToStorage()
+
 	document, typeOK := obj.(*linking.Document)
 	if !typeOK {
-		return nil, errorsv0.NewConversion("invalid type",
-			linking.DocumentKind, DocumentKind, "",
-		)
+		return path.Fail("invalid type", reflect.TypeOf(obj).String())
 	}
 
-	if document == nil || document.Metadata == nil {
-		return nil, errorsv0.NewConversion("invalid object",
-			linking.DocumentKind, DocumentKind, "",
-		)
-	}
-
-	if !document.Kind().Is(linking.DocumentKind) {
-		return nil, errorsv0.NewConversion("invalid object kind",
-			linking.DocumentKind, DocumentKind,
-			fmt.Sprintf("got: %s", document.Kind()),
-		)
+	if _, err := path.ValidateAPIObject(document); err != nil {
+		return nil, err
 	}
 
 	if document.Data == nil {
-		return nil, errorsv0.NewConversion("invalid object data",
-			linking.DocumentKind, DocumentKind,
-			fmt.Sprintf("got: %v", document.Data),
-		)
+		return path.Fail("invalid object data", "")
 	}
 
 	linker, err := c.LinkerConverter.ToStorage(document.Data.Linker)
@@ -96,26 +83,19 @@ func (c *DocumentConverter) ToStorage(obj interface{}) (interface{}, error) {
 
 // FromStorage converts a passed in document from storage format to a linking/v0.document
 func (c *DocumentConverter) FromStorage(obj interface{}) (interface{}, error) {
+	path := DocumentConversion.FromStorage()
+
 	document, typeOK := obj.(*Document)
 	if !typeOK {
-		return nil, errorsv0.NewConversion("invalid type",
-			DocumentKind, linking.DocumentKind, "",
-		)
+		return path.Fail("invalid type", reflect.TypeOf(obj).String())
 	}
 
 	if document == nil {
-		return nil, errorsv0.NewConversion("invalid object",
-			DocumentKind, linking.DocumentKind, "",
-		)
+		return path.Fail("invalid object", "")
 	}
 
-	kind := document.Kind()
-
-	if !kind.Is(linking.DocumentKind) {
-		return nil, errorsv0.NewConversion("invalid object kind",
-			DocumentKind, linking.DocumentKind,
-			fmt.Sprintf("got: %s,", kind),
-		)
+	if _, err := path.CheckStorageObjectKind(document); err != nil {
+		return nil, err
 	}
 
 	linker, err := c.LinkerConverter.FromStorage(document.Linker)

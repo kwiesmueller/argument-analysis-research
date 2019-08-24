@@ -7,32 +7,40 @@ import (
 	errorsv0 "github.com/canonical-debate-lab/argument-analysis-research/pkg/meta/errors/v0"
 )
 
-// Registry for mapping api types to their respective converters
+// Registry for mapping api types to their respective resources
 type Registry struct {
-	m          sync.RWMutex
-	converters map[meta.GroupVersionKind]Converter
+	m         sync.RWMutex
+	resources map[meta.GroupVersionKind]Resource
 }
 
-// NewRegistry for mapping api types to their respective converters
+// NewRegistry for mapping api types to their respective resources
 func NewRegistry() *Registry {
 	return &Registry{
-		converters: make(map[meta.GroupVersionKind]Converter),
+		resources: make(map[meta.GroupVersionKind]Resource),
 	}
 }
 
 // Add a converter for the given GroupVersionKind
-func (r *Registry) Add(gvk meta.GroupVersionKind, converter Converter) {
+func (r *Registry) Add(gvk meta.GroupVersionKind, resource Resource) {
 	r.m.Lock()
 	defer r.m.Unlock()
-	r.converters[gvk] = converter
+	r.resources[gvk] = resource
 }
 
-// Get a converter for the given GroupVersionKind
-func (r *Registry) Get(gvk meta.GroupVersionKind) (Converter, error) {
+// Get a resource for the given GroupVersionKind
+func (r *Registry) Get(gvk meta.GroupVersionKind) (Resource, error) {
 	r.m.RLock()
 	defer r.m.RUnlock()
-	if converter, ok := r.converters[gvk]; ok {
-		return converter, nil
+
+	resource, ok := r.resources[gvk]
+	if !ok {
+		// TODO: pointer?
+		return Resource{}, errorsv0.NewUnknownKind(gvk, "no resource found")
 	}
-	return nil, errorsv0.NewUnknownKind(gvk, "no converter found")
+
+	if err := resource.Validate(); err != nil {
+		return Resource{}, errorsv0.NewInvalidResource(gvk, err.Error())
+	}
+
+	return resource, nil
 }

@@ -1,9 +1,8 @@
 package linking
 
 import (
-	"fmt"
+	"reflect"
 
-	errorsv0 "github.com/canonical-debate-lab/argument-analysis-research/pkg/meta/errors/v0"
 	"github.com/canonical-debate-lab/argument-analysis-research/pkg/meta/linking/v0"
 	"github.com/canonical-debate-lab/argument-analysis-research/pkg/storage"
 )
@@ -34,31 +33,19 @@ var _ storage.Converter = &SegmentConverter{}
 
 // ToStorage converts a passed in linking/v0.segment to it's storage format
 func (c *SegmentConverter) ToStorage(obj interface{}) (interface{}, error) {
+	path := SegmentConversion.ToStorage()
+
 	segment, typeOK := obj.(*linking.Segment)
 	if !typeOK {
-		return nil, errorsv0.NewConversion("invalid type",
-			linking.SegmentKind, SegmentKind, "",
-		)
+		return path.Fail("invalid type", "")
 	}
 
-	if segment == nil || segment.Metadata == nil {
-		return nil, errorsv0.NewConversion("invalid object",
-			linking.SegmentKind, SegmentKind, "",
-		)
-	}
-
-	if !segment.Kind().Is(linking.SegmentKind) {
-		return nil, errorsv0.NewConversion("invalid object kind",
-			linking.SegmentKind, SegmentKind,
-			fmt.Sprintf("got: %s", segment.Kind()),
-		)
+	if _, err := path.ValidateAPIObject(segment); err != nil {
+		return nil, err
 	}
 
 	if segment.Data == nil {
-		return nil, errorsv0.NewConversion("invalid object data",
-			linking.SegmentKind, SegmentKind,
-			fmt.Sprintf("got: %s", segment.Data),
-		)
+		return path.Fail("invalid object data", "")
 	}
 
 	metadata, err := c.MetadataConverter.ToStorage(segment.Metadata)
@@ -75,26 +62,19 @@ func (c *SegmentConverter) ToStorage(obj interface{}) (interface{}, error) {
 
 // FromStorage converts a passed in segment from storage format to a linking/v0.segment
 func (c *SegmentConverter) FromStorage(obj interface{}) (interface{}, error) {
+	path := SegmentConversion.FromStorage()
+
 	segment, typeOK := obj.(*Segment)
 	if !typeOK {
-		return nil, errorsv0.NewConversion("invalid type",
-			SegmentKind, linking.SegmentKind, "",
-		)
+		return path.Fail("invalid type", reflect.TypeOf(obj).String())
 	}
 
 	if segment == nil {
-		return nil, errorsv0.NewConversion("invalid object",
-			SegmentKind, linking.SegmentKind, "",
-		)
+		return path.Fail("invalid object", "")
 	}
 
-	kind := segment.Kind()
-
-	if kind != linking.SegmentKind {
-		return nil, errorsv0.NewConversion("invalid object kind",
-			SegmentKind, linking.SegmentKind,
-			fmt.Sprintf("got: %s", kind),
-		)
+	if _, err := path.CheckStorageObjectKind(segment); err != nil {
+		return nil, err
 	}
 
 	metadata, err := c.MetadataConverter.FromStorage(segment.Metadata)

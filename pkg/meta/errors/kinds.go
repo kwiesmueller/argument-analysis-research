@@ -25,6 +25,12 @@ var UnknownKind = meta.GroupKind{
 	Kind:  "unknownKind",
 }
 
+// InvalidResource errors indicate a resource retrieved from the registry is invalid or missing mandatory information
+var InvalidResource = meta.GroupKind{
+	Group: APIError,
+	Kind:  "invalidResource",
+}
+
 // IsKind checks if the passed in error is an api object and if it matches the provided GroupVersionKind
 func IsKind(err error, kind meta.GroupVersionKind) bool {
 

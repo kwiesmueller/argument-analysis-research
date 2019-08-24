@@ -6,6 +6,7 @@ go_library(
         "conversion.go",
         "generic.go",
         "groups.go",
+        "invalidResource.go",
         "notfound.go",
         "unknownKind.go",
     ],

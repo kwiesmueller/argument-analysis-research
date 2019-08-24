@@ -30,16 +30,19 @@ var NotFoundKind = apiError.NotFound.WithVersion(APIVersion)
 // NotFoundData describes the lookup parameters and detailed error message
 type NotFoundData struct {
 	LookUp  string `json:"lookup"`
-	Message error  `json:"error"`
+	Message string `json:"message"`
+	Error   error  `json:"error,omitempty"`
 }
 
 // NewNotFound initializes an empty object with the correct metadata
 func NewNotFound(lookup string) *NotFound {
+	err := errors.New("object not found")
 	return &NotFound{
 		Metadata: meta.NewObjectMeta(NotFoundKind),
 		Data: &NotFoundData{
 			LookUp:  lookup,
-			Message: errors.New("object not found"),
+			Error:   err,
+			Message: err.Error(),
 		},
 	}
 }

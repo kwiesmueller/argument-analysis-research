@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"sync"
 
+	"github.com/pkg/errors"
+
 	"github.com/canonical-debate-lab/argument-analysis-research/pkg/meta"
 	errorsv0 "github.com/canonical-debate-lab/argument-analysis-research/pkg/meta/errors/v0"
 )
@@ -119,5 +121,5 @@ func (c *ConversionPath) ValidateAPIObject(obj meta.ObjectMetaAccessor) (interfa
 // The returned error is a meta conversion error
 func (c *ConversionPath) Fail(reason, details string) (interface{}, error) {
 	from, to := c.Path()
-	return nil, errorsv0.NewConversion(reason, from, to, details)
+	return nil, errors.WithStack(errorsv0.NewConversion(reason, from, to, details))
 }

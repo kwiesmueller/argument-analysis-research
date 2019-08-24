@@ -6,9 +6,12 @@ go_library(
     importpath = "github.com/canonical-debate-lab/argument-analysis-research/pkg/storage/registries",
     visibility = ["//visibility:public"],
     deps = [
+        "//pkg/meta/defaulters:go_default_library",
+        "//pkg/meta/defaulters/linking/v0:go_default_library",
         "//pkg/meta/linking/v0:go_default_library",
         "//pkg/storage:go_default_library",
         "//pkg/storage/dgraph/converters/linking/v0:go_default_library",
+        "//pkg/storage/preparators/linking/v0:go_default_library",
     ],
 )
 

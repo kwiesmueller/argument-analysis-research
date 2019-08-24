@@ -12,16 +12,21 @@ import (
 	"github.com/pkg/errors"
 )
 
-// NewLinker provides a handler for creating linker instances
-// POST /linker
-func NewLinker(ctx context.Context, registry *storage.Registry) api.HandlerFunc {
+// NewDocument provides a handler for creating document instances
+// POST /document
+// POST /linker/{id}/document
+func NewDocument(ctx context.Context, registry *storage.Registry) api.HandlerFunc {
 	return func(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 
-		var obj *linkingv0.Linker
+		var obj *linkingv0.Document
 
 		err := json.NewDecoder(r.Body).Decode(&obj)
 		if err != nil {
 			return errors.Wrap(err, "decoding request")
+		}
+
+		if obj.Data == nil {
+			return errors.New("missing data")
 		}
 
 		resource, err := registry.Get(obj.Kind())

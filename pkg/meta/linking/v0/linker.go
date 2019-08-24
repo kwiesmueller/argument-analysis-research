@@ -33,6 +33,9 @@ type LinkerData struct {
 
 // NewLinker initializes an empty object with the correct metadata
 func NewLinker(data *LinkerData) *Linker {
+	if data == nil {
+		data = &LinkerData{}
+	}
 	return &Linker{
 		Metadata: meta.NewObjectMeta(LinkerKind),
 		Data:     data,

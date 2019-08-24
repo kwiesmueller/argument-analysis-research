@@ -5,28 +5,26 @@ go_library(
     srcs = [
         "accessors.go",
         "converter.go",
+        "defaulter.go",
+        "preparator.go",
         "registry.go",
         "repository.go",
+        "resource.go",
     ],
     importpath = "github.com/canonical-debate-lab/argument-analysis-research/pkg/storage",
     visibility = ["//visibility:public"],
     deps = [
         "//pkg/meta:go_default_library",
         "//pkg/meta/errors/v0:go_default_library",
-        "//vendor/github.com/seibert-media/golibs/log:go_default_library",
-        "//vendor/go.uber.org/zap:go_default_library",
+        "//vendor/github.com/pkg/errors:go_default_library",
     ],
 )
 
 go_test(
     name = "go_default_test",
-    srcs = [
-        "provider_mock_test.go",
-        "repository_test.go",
-    ],
+    srcs = ["repository_test.go"],
     embed = [":go_default_library"],
     deps = [
-        "//pkg/meta/errors/v0:go_default_library",
         "//pkg/meta/linking/v0:go_default_library",
         "//pkg/mocks:go_default_library",
         "//pkg/storage/dgraph/converters/linking/v0:go_default_library",

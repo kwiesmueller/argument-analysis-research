@@ -31,6 +31,9 @@ type SegmentData struct {
 
 // NewSegment initializes an empty object with the correct metadata
 func NewSegment(data *SegmentData) *Segment {
+	if data == nil {
+		data = &SegmentData{}
+	}
 	return &Segment{
 		Metadata: meta.NewObjectMeta(SegmentKind),
 		Data:     data,

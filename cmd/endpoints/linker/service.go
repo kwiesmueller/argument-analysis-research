@@ -9,9 +9,9 @@ import (
 
 	linkingv0 "github.com/canonical-debate-lab/argument-analysis-research/pkg/meta/linking/v0"
 	"github.com/canonical-debate-lab/argument-analysis-research/pkg/mocks"
-	"github.com/canonical-debate-lab/argument-analysis-research/pkg/storage"
 	linkingStoragev0 "github.com/canonical-debate-lab/argument-analysis-research/pkg/storage/dgraph/converters/linking/v0"
 	"github.com/canonical-debate-lab/argument-analysis-research/pkg/storage/registries"
+	"github.com/canonical-debate-lab/argument-analysis-research/pkg/storage/repositories"
 
 	"github.com/seibert-media/golibs/log"
 	"go.uber.org/zap"
@@ -47,14 +47,16 @@ func main() {
 	}
 	provider.Store[linker.Metadata.ID] = linker
 
-	repo := &storage.Repository{
-		Registry: registries.Default,
-		Provider: provider,
-	}
+	repo := repositories.NewDefault()
+	registries.PrepareDefault(provider, repo)
+
 	// ---
 
-	srv.Router.Post("/linker", api.NewHandler(ctx, linker_api.NewLinker(ctx, repo)))
-	srv.Router.Get("/linker/{id}", api.NewHandler(ctx, linker_api.GetLinker(ctx, repo)))
+	srv.Router.Post("/linker", api.NewHandler(ctx, linker_api.NewLinker(ctx, registries.Default)))
+	srv.Router.Get("/linker/{id}", api.NewHandler(ctx, linker_api.GetLinker(ctx, registries.Default)))
+
+	srv.Router.Post("/document", api.NewHandler(ctx, linker_api.NewDocument(ctx, registries.Default)))
+	srv.Router.Post("/linker/{id}/document", api.NewHandler(ctx, linker_api.NewDocument(ctx, registries.Default)))
 
 	if err := srv.Start(ctx); err != nil {
 		log.From(ctx).Fatal("running server", zap.Error(err))
