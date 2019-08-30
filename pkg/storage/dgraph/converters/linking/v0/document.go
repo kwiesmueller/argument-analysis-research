@@ -11,7 +11,7 @@ import (
 type Document struct {
 	Metadata
 	UID      string     `json:"uid"`
-	Linker   *Linker    `json:"linker,omitempty"`
+	Linkers  []string   `json:"linkers,omitempty"`
 	Content  string     `json:"content"`
 	Segments []*Segment `json:"segment,omitempty"`
 }
@@ -52,11 +52,6 @@ func (c *DocumentConverter) ToStorage(obj interface{}) (interface{}, error) {
 		return path.Fail("invalid object data", "")
 	}
 
-	linker, err := c.LinkerConverter.ToStorage(document.Data.Linker)
-	if err != nil {
-		return nil, err
-	}
-
 	var segments []*Segment
 	for _, segment := range document.Data.Segments {
 		convertedSegment, err := c.SegmentConverter.ToStorage(segment)
@@ -75,7 +70,7 @@ func (c *DocumentConverter) ToStorage(obj interface{}) (interface{}, error) {
 	return &Document{
 		Metadata: metadata,
 		UID:      document.Data.UID,
-		Linker:   linker.(*Linker),
+		Linkers:  document.Data.Linkers,
 		Content:  document.Data.Content,
 		Segments: segments,
 	}, nil
@@ -98,11 +93,6 @@ func (c *DocumentConverter) FromStorage(obj interface{}) (interface{}, error) {
 		return nil, err
 	}
 
-	linker, err := c.LinkerConverter.FromStorage(document.Linker)
-	if err != nil {
-		return nil, err
-	}
-
 	var segments []*linking.Segment
 	for _, segment := range document.Segments {
 		convertedSegment, err := c.SegmentConverter.FromStorage(segment)
@@ -122,7 +112,7 @@ func (c *DocumentConverter) FromStorage(obj interface{}) (interface{}, error) {
 		Metadata: metadata,
 		Data: &linking.DocumentData{
 			UID:      document.UID,
-			Linker:   linker.(*linking.Linker),
+			Linkers:  document.Linkers,
 			Content:  document.Content,
 			Segments: segments,
 		},

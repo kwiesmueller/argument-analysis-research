@@ -57,6 +57,7 @@ func main() {
 
 	srv.Router.Post("/document", api.NewHandler(ctx, linker_api.NewDocument(ctx, registries.Default)))
 	srv.Router.Post("/linker/{id}/document", api.NewHandler(ctx, linker_api.NewDocument(ctx, registries.Default)))
+	srv.Router.Get("/document/{id}", api.NewHandler(ctx, linker_api.GetDocument(ctx, registries.Default)))
 
 	if err := srv.Start(ctx); err != nil {
 		log.From(ctx).Fatal("running server", zap.Error(err))

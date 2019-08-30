@@ -5,9 +5,5 @@ go_library(
     srcs = ["document.go"],
     importpath = "github.com/canonical-debate-lab/argument-analysis-research/pkg/storage/preparators/linking/v0",
     visibility = ["//visibility:public"],
-    deps = [
-        "//pkg/meta/linking/v0:go_default_library",
-        "//pkg/storage:go_default_library",
-        "@com_github_pkg_errors//:go_default_library",
-    ],
+    deps = ["//pkg/storage:go_default_library"],
 )

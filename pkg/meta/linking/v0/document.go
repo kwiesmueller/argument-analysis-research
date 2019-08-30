@@ -26,7 +26,7 @@ var DocumentKind = Linking.WithKind("document")
 // DocumentData describes the document, its content and links to a certain Linker
 type DocumentData struct {
 	UID      string     `json:"uid"`
-	Linker   *Linker    `json:"linker,omitempty"`
+	Linkers  []string   `json:"linkers,omitempty"`
 	Content  string     `json:"content"`
 	Segments []*Segment `json:"segments,omitempty"`
 }

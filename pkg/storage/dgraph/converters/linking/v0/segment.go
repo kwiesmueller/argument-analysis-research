@@ -37,7 +37,7 @@ func (c *SegmentConverter) ToStorage(obj interface{}) (interface{}, error) {
 
 	segment, typeOK := obj.(*linking.Segment)
 	if !typeOK {
-		return path.Fail("invalid type", "")
+		return path.Fail("invalid type", reflect.TypeOf(obj).String())
 	}
 
 	if _, err := path.ValidateAPIObject(segment); err != nil {
