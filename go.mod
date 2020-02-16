@@ -18,11 +18,10 @@ require (
 	github.com/prometheus/client_golang v0.9.3-0.20190127221311-3c4408c8b829 // indirect
 	github.com/seibert-media/golibs v1.0.3
 	github.com/sethgrid/pester v0.0.0-20190127155807-68a33a018ad0
-	go.etcd.io/bbolt v1.3.3
 	go.opencensus.io v0.22.0
 	go.uber.org/zap v1.10.0
 	gonum.org/v1/gonum v0.0.0-20190710053202-4340aa3071a0 // indirect
-	gopkg.in/djherbis/stow.v3 v3.0.0
+	google.golang.org/grpc v1.20.1
 	gopkg.in/jdkato/prose.v2 v2.0.0-20180825173540-767a23049b9e
 	gopkg.in/neurosnap/sentences.v1 v1.0.6 // indirect
 	k8s.io/utils v0.0.0-20190801114015-581e00157fb1

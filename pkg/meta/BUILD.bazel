@@ -12,7 +12,7 @@ go_library(
     ],
     importpath = "github.com/canonical-debate-lab/argument-analysis-research/pkg/meta",
     visibility = ["//visibility:public"],
-    deps = ["@com_github_pkg_errors//:go_default_library"],
+    deps = ["//vendor/github.com/pkg/errors:go_default_library"],
 )
 
 go_test(
@@ -24,7 +24,7 @@ go_test(
     ],
     embed = [":go_default_library"],
     deps = [
-        "@com_github_google_gofuzz//:go_default_library",
-        "@io_k8s_utils//diff:go_default_library",
+        "//vendor/github.com/google/gofuzz:go_default_library",
+        "//vendor/k8s.io/utils/diff:go_default_library",
     ],
 )

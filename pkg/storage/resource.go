@@ -13,6 +13,7 @@ type Resource struct {
 	Converter  Converter
 	Repository Repository
 	Provider   Provider
+	Lookup     string
 }
 
 // Validate the resource contains all required fields

@@ -34,6 +34,7 @@ func PrepareDefault(sharedProvider storage.Provider, sharedRepository storage.Re
 		Converter:  linkerConverter,
 		Repository: sharedRepository,
 		Provider:   sharedProvider,
+		Lookup:     linking_storage_v0.LinkerLookup,
 	})
 
 	Default.Add(linking_v0.SegmentKind, storage.Resource{

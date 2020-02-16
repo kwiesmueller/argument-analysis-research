@@ -1,0 +1,15 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["api.pb.go"],
+    importmap = "github.com/canonical-debate-lab/argument-analysis-research/vendor/github.com/dgraph-io/dgo/protos/api",
+    importpath = "github.com/dgraph-io/dgo/protos/api",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//vendor/google.golang.org/grpc/codes:go_default_library",
+        "//vendor/google.golang.org/grpc/status:go_default_library",
+        "@com_github_golang_protobuf//proto:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
+    ],
+)

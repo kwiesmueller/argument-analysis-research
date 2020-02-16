@@ -21,6 +21,20 @@ var (
 		API:     linking.LinkerKind,
 		Storage: LinkerKind,
 	}
+	// LinkerLookup for querying the object
+	LinkerLookup = `{
+		object(func: eq(id, "%s")) {
+			apiVersion
+			kind
+			id
+			created
+			labels
+			uid
+			description
+			rater
+			threshold
+		}
+	}`
 )
 
 // LinkerConverter for converting linking/v0.linker objects to/from their dgraph storage representations

@@ -29,11 +29,6 @@ func NewDefault() storage.Repository {
 // Add an object to the repository
 func (r *Default) Add(ctx context.Context, resource storage.Resource, obj interface{}) (meta.ObjectMetaAccessor, error) {
 
-	// resource, err := r.Registry.Get(obj.Kind())
-	// if err != nil {
-	// 	return nil, err
-	// }
-
 	if err := resource.BeforeCreation(ctx, obj); err != nil {
 		return nil, err
 	}
@@ -46,7 +41,7 @@ func (r *Default) Add(ctx context.Context, resource storage.Resource, obj interf
 	}
 
 	log.From(ctx).Info("writing object", zap.String("converted", fmt.Sprintf("%#v", converted)))
-	stored, err := resource.Provider.Write(converted)
+	stored, err := resource.Provider.Write(ctx, converted)
 	if err != nil {
 		return nil, err
 	}
@@ -66,13 +61,10 @@ func (r *Default) Add(ctx context.Context, resource storage.Resource, obj interf
 // Get an object from the repository
 func (r *Default) Get(ctx context.Context, resource storage.Resource, kind meta.GroupVersionKind, id string) (meta.ObjectMetaAccessor, error) {
 
-	// resource, err := r.Registry.Get(kind)
-	// if err != nil {
-	// 	return nil, err
-	// }
+	lookup := fmt.Sprintf(resource.Lookup, id)
 
 	log.From(ctx).Info("reading object", zap.Stringer("kind", kind), zap.String("id", id))
-	stored, err := resource.Provider.Read(id)
+	stored, err := resource.Provider.Read(ctx, lookup)
 	if err != nil {
 		return nil, err
 	}
